@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TicketMachineConsole
+namespace ParkingMachineConsole
 {
     /// <summary>
     /// An object of the class ParkingMachine represents a parking machine.

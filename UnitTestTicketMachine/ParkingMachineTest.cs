@@ -1,17 +1,17 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using TicketMachineConsole;
+using ParkingMachineConsole;
 
-namespace UnitTestTicketMachine
+namespace UnitTestParkingMachine
 {
     /// <summary>
     /// Test for the TicketMachine class.
     /// </summary>
     [TestClass]
-    public class TicketMachineTest
+    public class ParkingMachineTest
     {
         [TestMethod]
-        public void ValidInsertMoneyTest()
+        public void ValidInsertMoney()
         {
             // Arrange
             ParkingMachine machine = new ParkingMachine();
@@ -24,7 +24,7 @@ namespace UnitTestTicketMachine
             Assert.AreEqual(90, machine.CurrentTotal);
         }
         [TestMethod]
-        public void InvalidInsertMoneyTest()
+        public void InvalidInsertMoney()
         {
             // Arrange
             ParkingMachine machine = new ParkingMachine();
@@ -35,89 +35,8 @@ namespace UnitTestTicketMachine
             // Assert
             Assert.AreEqual(0, machine.CurrentTotal);
         }
-
         [TestMethod]
-        public void BuyTicket30MinTest()
-        {
-            // Arrange
-            ParkingMachine machine = new ParkingMachine();
-
-            // Act
-            machine.InsertMoney(10);
-            string ticketText = machine.BuyTicket();
-
-            // Assert
-            Assert.AreEqual(0, machine.CurrentTotal);
-            Assert.AreEqual(10, machine.Total);
-            Assert.AreEqual(TimeToTicketText(days: 0, hours: 0, minutes: 30), ticketText);
-        }
-        [TestMethod]
-        public void BuyTicket3HourTest()
-        {
-            // Arrange
-            ParkingMachine machine = new ParkingMachine();
-
-            // Act
-            machine.InsertMoney(60);
-            string ticketText = machine.BuyTicket();
-
-            // Assert
-            Assert.AreEqual(0, machine.CurrentTotal);
-            Assert.AreEqual(60, machine.Total);
-            Assert.AreEqual(TimeToTicketText(days: 0, hours: 3, minutes: 0), ticketText);
-        }
-        [TestMethod]
-        public void BuyTicket4DayTest()
-        {
-            // Arrange
-            ParkingMachine machine = new ParkingMachine();
-
-            // Act
-            machine.InsertMoney(20 * 24 * 4);
-            string ticketText = machine.BuyTicket();
-
-            // Assert
-            Assert.AreEqual(0, machine.CurrentTotal);
-            Assert.AreEqual(20 * 24 * 4, machine.Total);
-            Assert.AreEqual(TimeToTicketText(days: 4, hours: 0, minutes: 0), ticketText);
-        }
-        [TestMethod]
-        public void BuyTicket2Day3Hour15MinTest()
-        {
-            // Arrange
-            ParkingMachine machine = new ParkingMachine();
-            int money = 2 * 24 * 20 + 3 * 20 + 5;
-
-            // Act
-            machine.InsertMoney(money);
-            string ticketText = machine.BuyTicket();
-
-            // Assert
-            Assert.AreEqual(0, machine.CurrentTotal);
-            Assert.AreEqual(money, machine.Total);
-            Assert.AreEqual(TimeToTicketText(days: 2, hours: 3, minutes: 15), ticketText);
-        }
-        [TestMethod]
-        public void MultipleBuyTicketTest()
-        {
-            // Arrange
-            ParkingMachine machine = new ParkingMachine();
-            int money = 2 * 24 * 20 + 3 * 20 + 5;
-
-            // Act
-            machine.InsertMoney(money);
-            machine.BuyTicket();
-            machine.InsertMoney(money);
-            machine.BuyTicket();
-            machine.InsertMoney(money);
-            machine.BuyTicket();
-
-            // Assert
-            Assert.AreEqual(0, machine.CurrentTotal);
-            Assert.AreEqual(3 * money, machine.Total);
-        }
-        [TestMethod]
-        public void CancelTest()
+        public void Cancel()
         {
             // Arrange
             ParkingMachine machine = new ParkingMachine();
@@ -131,6 +50,88 @@ namespace UnitTestTicketMachine
             Assert.AreEqual(100, refund);
 
         }
+        [TestMethod]
+        public void BuyTicket30Min_CurrentTotal_Zeroed()
+        {
+            // Arrange
+            ParkingMachine machine = new ParkingMachine();
+
+            // Act
+            machine.InsertMoney(10);
+            machine.BuyTicket();
+
+            // Assert
+            Assert.AreEqual(0, machine.CurrentTotal);
+        }
+        [TestMethod]
+        public void BuyTicketTwice_Total_Summed()
+        {
+            // Arrange
+            ParkingMachine machine = new ParkingMachine();
+
+            // Act
+            machine.InsertMoney(10);
+            machine.BuyTicket();
+            machine.InsertMoney(40);
+            machine.BuyTicket();
+
+            // Assert
+            Assert.AreEqual(50, machine.Total);
+        }
+        [TestMethod]
+        public void BuyTicket30Min_TicketText()
+        {
+            // Arrange
+            ParkingMachine machine = new ParkingMachine();
+
+            // Act
+            machine.InsertMoney(10);
+            string ticketText = machine.BuyTicket();
+
+            // Assert
+            Assert.AreEqual(TimeToTicketText(days: 0, hours: 0, minutes: 30), ticketText);
+        }
+        [TestMethod]
+        public void BuyTicket3Hour_TicketText()
+        {
+            // Arrange
+            ParkingMachine machine = new ParkingMachine();
+
+            // Act
+            machine.InsertMoney(60);
+            string ticketText = machine.BuyTicket();
+
+            // Assert
+            Assert.AreEqual(TimeToTicketText(days: 0, hours: 3, minutes: 0), ticketText);
+        }
+        [TestMethod]
+        public void BuyTicket4Day_TicketText()
+        {
+            // Arrange
+            ParkingMachine machine = new ParkingMachine();
+
+            // Act
+            machine.InsertMoney(20 * 24 * 4);
+            string ticketText = machine.BuyTicket();
+
+            // Assert
+            Assert.AreEqual(TimeToTicketText(days: 4, hours: 0, minutes: 0), ticketText);
+        }
+        [TestMethod]
+        public void BuyTicket2Day3Hour15Min_TicketText()
+        {
+            // Arrange
+            ParkingMachine machine = new ParkingMachine();
+            int money = 2 * 24 * 20 + 3 * 20 + 5;
+
+            // Act
+            machine.InsertMoney(money);
+            string ticketText = machine.BuyTicket();
+
+            // Assert
+            Assert.AreEqual(TimeToTicketText(days: 2, hours: 3, minutes: 15), ticketText);
+        }
+
         private string TimeToTicketText(int days, int hours, int minutes)
         {
             return "Parking ticket valid for:" + Environment.NewLine +

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TicketMachineConsole\TicketMachineConsole.csproj" />
+    <ProjectReference Include="..\TicketMachineConsole\ParkingMachineConsole.csproj" />
   </ItemGroup>
 
 </Project>
