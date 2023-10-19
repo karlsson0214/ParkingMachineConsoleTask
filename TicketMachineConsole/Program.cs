@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TicketMachineConsole
+namespace ParkingMachineConsole
 {
     class Program
     {
